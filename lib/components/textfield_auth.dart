@@ -4,7 +4,6 @@ class TextfieldAuth extends StatelessWidget {
   final TextEditingController controller;
   final bool obscureText;
   final String hintText;
-
   const TextfieldAuth({
     super.key,
     required this.controller,
@@ -21,20 +20,16 @@ class TextfieldAuth extends StatelessWidget {
         style: const TextStyle(color: Color.fromARGB(255, 154, 69, 0)),
         controller: controller,
         obscureText: obscureText,
-        decoration:  InputDecoration(
+        decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
             color: Colors.orange[800],
           ),
           enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color.fromARGB(255, 255, 229, 190),
-            ),
+            borderSide: BorderSide(color: Color.fromARGB(255, 255, 229, 190)),
           ),
           focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.white,
-            ),
+            borderSide: BorderSide(color: Colors.white),
           ),
           fillColor: const Color.fromARGB(255, 255, 205, 130),
           filled: true,
