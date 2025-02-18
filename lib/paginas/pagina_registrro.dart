@@ -1,10 +1,19 @@
+import 'package:ejemplo_firebase/auth/servicio_auth.dart';
 import 'package:ejemplo_firebase/components/boton_auth.dart';
 import 'package:ejemplo_firebase/components/textfield_auth.dart';
 import 'package:flutter/material.dart';
 
 class PaginaResgistro extends StatelessWidget {
   const PaginaResgistro({super.key});
-  void hacerRegistro() {}
+
+  void hacerRegistro() {
+
+    final ServicioAuth servicioAuth = ServicioAuth(
+
+    );
+    servicioAuth.registroConEmailPassword("email1@gmail.com", "123456");
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController tecEmail = TextEditingController();
