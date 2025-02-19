@@ -6,12 +6,31 @@ import 'package:flutter/material.dart';
 class PaginaResgistro extends StatelessWidget {
   const PaginaResgistro({super.key});
 
-  void hacerRegistro() {
+  void hacerRegistro(BuildContext context, String email, String password,
+      String confPassword) async {
+    if (password.isEmpty || email.isEmpty) {
+      //Gestionarlo
+      return;
+    }
 
-    final ServicioAuth servicioAuth = ServicioAuth(
+    if (password != confPassword) {
+      //Gestion del caso
+      return;
+    }
 
-    );
-    servicioAuth.registroConEmailPassword("email1@gmail.com", "123456");
+    try {
+      ServicioAuth().registroConEmailPassword(email, password);
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Error"),
+          content: Text(e.toString()),
+        ),
+      );
+    }
+
+    
   }
 
   @override
@@ -121,7 +140,8 @@ class PaginaResgistro extends StatelessWidget {
                 //Boton registrarse
                 BotonAuth(
                   texto: "Registro",
-                  onTap: hacerRegistro,
+                  onTap: () => hacerRegistro(context, tecEmail.text,
+                      tecPassword.text, tecConfPassw.text),
                 ),
                 BotonAuth(
                   texto: "LogOut",
