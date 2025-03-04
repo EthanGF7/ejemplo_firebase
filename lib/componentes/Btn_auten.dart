@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 
-class BotonAuth extends StatelessWidget {
-  final String texto;
+class BtnAuten extends StatelessWidget {
+  final String text;
   final Function() onTap;
-  const BotonAuth({
-    super.key,
-    required this.texto,
-    required this.onTap,
-  });
+
+  const BtnAuten({super.key, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap ,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 244, 111, 54),
           borderRadius: BorderRadius.circular(10),
+          color: const Color.fromARGB(255, 244, 111, 54)
         ),
         child: Padding(
-          padding: const EdgeInsets.all(25),
+          padding: const EdgeInsets.all(15),
           child: Text(
-            texto,
+            text,
             style: TextStyle(
               color: Colors.orange[100],
-              fontSize: 16,
               fontWeight: FontWeight.bold,
-              letterSpacing: 4,
+              fontSize: 16,
+              letterSpacing: 4
             ),
           ),
         ),
