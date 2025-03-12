@@ -1,60 +1,88 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ServeiAuth {
+class ServeriAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   
-  //Usuari actual
   User? getUsuariActual() {
     return _auth.currentUser;
   }
 
-  //fer logout
-  Future<void> ferLogout() async {
+  Future<void> ferLogout() async{
     return await _auth.signOut();
   }
+  
+  Future<String?> loginEmailPassword(String email, password) async{
 
-  //Fer login
-  Future<String?> loginAmbEmailIPassword(String email, String password) async {
     try {
-      UserCredential credencialUsuari = await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      UserCredential credencialUsuari = await _auth.signInWithEmailAndPassword(
+        email: email, 
+        password: password
+      );
+
+      final QuerySnapshot querySnapshot = await _firestore
+      .collection("Usuaris")
+      .where("email", isEqualTo: email)
+      .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        _firestore.collection("Usuaris").doc(credencialUsuari.user!.uid).set({
+          "uid": credencialUsuari.user!.uid,
+          "email": email,
+          "nom": "",
+        });
+      }
+
       return null;
+
     } on FirebaseAuthException catch(e) {
       return "Error: ${e.message}";
     }
   }
-
-
-  //fer registre
-  Future<String?> registreAmbEmailIPassword (String email, password) async {
+  
+  Future<String?> registreEmailPassword(String email, password) async {
+    
+    
     try {
-      UserCredential credencialUsuari = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      _firestore.collection("Usuaris").doc(credencialUsuari.user!.uid).set({
-        "uid": credencialUsuari.user!.uid,
-        "email": email,
-        "nom": "",
-      });
-    return null;
-    } on FirebaseAuthException catch(e){
-      switch (e.code) {
-        case "email-already-in-use":
-          return "Ja hi ha un usuari amb aquest email";
+      UserCredential credencialusuari = await _auth
+        .createUserWithEmailAndPassword(
+          email: email, 
+          password: password
+        );
 
+        _firestore.collection("Usuaris").doc(credencialusuari.user!.uid).set({
+          "uid": credencialusuari.user!.uid,
+          "email": email,
+          "nom": "",
+        });
+
+        return null;
+    } on FirebaseAuthException catch (e) {
+      
+      switch(e.code){
+        case "email-already-in-use":
+          return "Ja hi ha un usuari amb aquest correo electronic.";
+        
         case "invalid-email":
-          return "Email no vàlid";
+          return "Aquest correo electronic es invalid, torna-ho provar.";
 
         case "operation-not-allowed":
-          return "Email i/o password no habilitats";
+          return "El correo o la contraseña no habilitats.";
 
         case "weak-password":
-          return "Cal un password més robust.";
-
+          return "La contrasenya es debíl, prova una més forta.";
+        
         default:
-        return "Error ${e.message}";      
+          return "Error ${e.message}";
       }
+
     } catch (e) {
+
       return "Error $e";
     }
+
+    
   }
 }

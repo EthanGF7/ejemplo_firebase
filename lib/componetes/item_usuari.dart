@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ItemUsuari extends StatelessWidget {
-  final String emailUsuari;
+class ItemUsari extends StatelessWidget {
+  final String emailUsario;
   final Function() onTap;
-
-  const ItemUsuari({super.key, required this.emailUsuari, required this.onTap});
+  const ItemUsari({
+    super.key,
+    required this.emailUsario,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +15,14 @@ class ItemUsuari extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.amber[200],
-          borderRadius: BorderRadius.circular(10),
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(20),
         ),
         margin: const EdgeInsets.only(top: 10, left: 40, right: 40),
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Text(emailUsuari),
-        )
+          child: Text(emailUsario),
+        ),
       ),
     );
   }

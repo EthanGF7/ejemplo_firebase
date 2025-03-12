@@ -1,7 +1,7 @@
 
 import 'package:ejemplo_firebase/auth/servei_auth.dart';
 import 'package:ejemplo_firebase/chat/servei_chat.dart';
-import 'package:ejemplo_firebase/componentes/item_usuari.dart';
+import 'package:ejemplo_firebase/componetes/item_usuari.dart';
 import 'package:flutter/material.dart';
 
 class Paginici extends StatelessWidget {
@@ -12,16 +12,16 @@ class Paginici extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple[200],
-        title: Text(ServeiAuth().getUsuariActual()!.email.toString()),
+        title: Text(ServeriAuth().getUsuariActual()!.email.toString()),
         actions: [
           IconButton(onPressed: () {
-            ServeiAuth().ferLogout();
+            ServeriAuth().ferLogout();
           }, 
           icon: const Icon(Icons.logout),)
         ],
       ),
       body: StreamBuilder(
-        stream: ServeiChat().getUsuaris(), 
+        stream: ServeiChat().getUsarios(), 
         builder: (context, snapshot){
 
           //cas que hi hagi un error
@@ -46,9 +46,9 @@ class Paginici extends StatelessWidget {
 
   Widget _construeixItemUsuari(Map<String, dynamic> dadesUsuari) {
 
-    if (dadesUsuari["email"] == ServeiAuth().getUsuariActual()!.email) {
+    if (dadesUsuari["email"] == ServeriAuth().getUsuariActual()!.email) {
       return Container();
     }
-    return ItemUsuari(emailUsuari: dadesUsuari["email"], onTap: () {},);
+    return ItemUsari(emailUsario: dadesUsuari["email"], onTap: () {},);
   }
 }
