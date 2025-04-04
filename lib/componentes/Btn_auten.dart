@@ -19,7 +19,7 @@ class BtnAuten extends StatelessWidget {
           padding: const EdgeInsets.all(13),
           child: Text(
             Txt,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 16,

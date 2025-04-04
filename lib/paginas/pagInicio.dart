@@ -26,15 +26,15 @@ class _paginainicioState extends State<paginainicio> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditardatosUsario(),
+                      builder: (context) => const EditardatosUsario(),
                     ));
               },
-              icon: Icon(Icons.person)),
+              icon: const Icon(Icons.person)),
           IconButton(
             onPressed: () {
               ServicioAuth().hacerlogout();
             },
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
           ),
         ],
       ),
@@ -43,10 +43,10 @@ class _paginainicioState extends State<paginainicio> {
           builder: (context, snapshot) {
             //encaso de error
             if (snapshot.hasError) {
-              return Text("Error en el snapshot");
+              return const Text("Error en el snapshot");
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Cargando datos");
+              return const Text("Cargando datos");
             }
             //devolviendo datos
             return ListView(

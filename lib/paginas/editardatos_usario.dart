@@ -44,21 +44,21 @@ class _EditardatosUsarioState extends State<EditardatosUsario> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Editar Datos Usuario"),
+        title: const Text("Editar Datos Usuario"),
         backgroundColor: Colors.blueGrey[200],
       ),
       body: Center(
         child: Column(
           children: [
-            Text("Edita tus datos"),
+            const Text("Edita tus datos"),
             _imatgeEnBytes != null
                 ? Image.memory(_imatgeEnBytes!, height: 200)
-                : Text("No se ha seleccionado ninguna imagen"),
-            SizedBox(height: 20),
+                : const Text("No se ha seleccionado ninguna imagen"),
+            const SizedBox(height: 20),
             ElevatedButton(
-                onPressed: _SubirImagenes, child: Text("Subir Imagen")),
+                onPressed: _SubirImagenes, child: const Text("Subir Imagen")),
             ElevatedButton(
-                onPressed: _recuperarImagen, child: Text("Recuperar Imagen")),
+                onPressed: _recuperarImagen, child: const Text("Recuperar Imagen")),
           ],
         ),
       ),

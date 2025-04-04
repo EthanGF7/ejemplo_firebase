@@ -15,7 +15,7 @@ class ItemUsuario extends StatelessWidget {
           color: const Color.fromARGB(255, 140, 191, 233),
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: EdgeInsets.only(top: 10, left: 40, right: 40),
+        margin: const EdgeInsets.only(top: 10, left: 40, right: 40),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(emailUsuaio),

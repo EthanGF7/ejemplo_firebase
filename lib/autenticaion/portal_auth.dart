@@ -13,9 +13,9 @@ class PortalAuth extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return paginainicio();
+              return const paginainicio();
             } else {
-              return LoginRegistro();
+              return const LoginRegistro();
             }
           }),
     );

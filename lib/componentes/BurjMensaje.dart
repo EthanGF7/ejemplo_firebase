@@ -17,73 +17,64 @@ class BurbujaMensaje extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Validación de Fecha
     DateTime fechaMensaje = Fecha.toDate();
     DateTime ahora = DateTime.now();
-    int diferenciaDias = ahora.difference(fechaMensaje).inDays;
 
+    // Calcular diferència de dies
+    int diferenciaDias = ahora.difference(
+      DateTime(fechaMensaje.year, fechaMensaje.month, fechaMensaje.day),
+    ).inDays;
+
+    // Format de la data
     String textoFecha;
-    try {
-      if (diferenciaDias == 0) {
-        textoFecha = DateFormat('HH:mm').format(fechaMensaje);
-      } else if (diferenciaDias == 1) {
-        textoFecha = 'hace 1 día';
-      } else {
-        textoFecha = 'hace $diferenciaDias días';
-      }
-    } catch (e) {
-      textoFecha = "Fecha no válida";
-      print("Error formateando la fecha: $e");
+    if (diferenciaDias == 0) {
+      textoFecha = DateFormat('HH:mm').format(fechaMensaje);
+    } else if (diferenciaDias == 1) {
+      textoFecha = 'Fa 1 dia';
+    } else {
+      textoFecha = 'Fa $diferenciaDias dies';
     }
 
+    // Identificar si és el missatge de l'usuari actual
     final usuarioActual = ServicioAuth().getUsuarioActual();
     final esUsuarioActual = usuarioActual != null && idAutor == usuarioActual.uid;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Align(
         alignment: esUsuarioActual ? Alignment.centerRight : Alignment.centerLeft,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              esUsuarioActual ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: esUsuarioActual ? MainAxisAlignment.end : MainAxisAlignment.start,
-              children: [
-                Flexible(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.7,
-                    ),
-                    decoration: BoxDecoration(
-                      color: esUsuarioActual
-                          ? const Color.fromARGB(255, 166, 250, 201)
-                          : const Color.fromARGB(255, 181, 213, 218),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      mensaje,
-                      softWrap: true,
-                      overflow: TextOverflow.clip,
-                    ),
-                  ),
-                ),
-              ],
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              decoration: BoxDecoration(
+                color: esUsuarioActual
+                    ? const Color.fromARGB(255, 166, 250, 201)
+                    : const Color.fromARGB(255, 255, 224, 140), // Color groc per altres
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                mensaje,
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
             const SizedBox(height: 2),
-            Row(
-              mainAxisAlignment: esUsuarioActual ? MainAxisAlignment.end : MainAxisAlignment.start,
-              children: [
-                Text(
-                  textoFecha,
-                  style: TextStyle(
-                    color: esUsuarioActual
-                        ? const Color.fromARGB(255, 80, 185, 124)
-                        : const Color.fromARGB(255, 104, 201, 216),
-                    fontSize: 10,
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Text(
+                textoFecha,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: esUsuarioActual
+                      ? const Color.fromARGB(255, 80, 185, 124)
+                      : const Color.fromARGB(255, 160, 160, 100),
                 ),
-              ],
+              ),
             ),
           ],
         ),

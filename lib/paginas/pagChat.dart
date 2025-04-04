@@ -15,44 +15,46 @@ class Paginachat extends StatefulWidget {
 class _PaginachatState extends State<Paginachat> {
   final TextEditingController tecMensaje = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
   FocusNode Teclado = FocusNode();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     Teclado.addListener(() {
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         hacerScrollAbajo();
       });
     });
 
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       hacerScrollAbajo();
     });
   }
 
   void hacerScrollAbajo() {
     _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + 100,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.fastOutSlowIn);
+      _scrollController.position.maxScrollExtent + 100,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 215, 245, 250), // color de fons com la imatge
       appBar: AppBar(
-        backgroundColor: Colors.blue[200],
-        title: Text("Sala chat"),
+        backgroundColor: const Color.fromARGB(255, 202, 174, 238),
+        title: Text(
+          ServicioAuth().getUsuarioActual()?.email ?? "Chat",
+          style: const TextStyle(color: Colors.black87),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: [
-          //zona mensajes
           _crearZonaMostarMensajes(),
-          //zona escribir
           _crearZonaEscribirMensajes(),
         ],
       ),
@@ -62,24 +64,27 @@ class _PaginachatState extends State<Paginachat> {
   Widget _crearZonaMostarMensajes() {
     return Expanded(
       child: StreamBuilder(
-          stream: ServicioChat().getMensajes(
-              ServicioAuth().getUsuarioActual()!.uid, widget.idReceptor),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text("Error Cargando Datos...");
-            }
+        stream: ServicioChat().getMensajes(
+          ServicioAuth().getUsuarioActual()!.uid,
+          widget.idReceptor,
+        ),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text("Error carregant missatges..."));
+          }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Cargando Mensaje....");
-            }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            return ListView(
-              controller: _scrollController,
-              children: snapshot.data!.docs
-                  .map((document) => _construirItemMensaje(document))
-                  .toList(),
-            );
-          }),
+          return ListView(
+            controller: _scrollController,
+            children: snapshot.data!.docs
+                .map((document) => _construirItemMensaje(document))
+                .toList(),
+          );
+        },
+      ),
     );
   }
 
@@ -91,42 +96,41 @@ class _PaginachatState extends State<Paginachat> {
       idAutor: data["idAutor"],
       Fecha: data["timestamp"],
     );
-    //Text(data["mensaje"]);
   }
 
   Widget _crearZonaEscribirMensajes() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: tecMensaje,
-            decoration: InputDecoration(
-              hintText: "escribe tu mensaje....",
-              filled: true,
-              fillColor: const Color.fromARGB(255, 139, 235, 219),
+    return Container(
+      color: const Color.fromARGB(255, 255, 224, 140), // groc com la imatge
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              focusNode: Teclado,
+              controller: tecMensaje,
+              decoration: const InputDecoration(
+                hintText: "Escriu el missatge...",
+                border: InputBorder.none,
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        IconButton(
-          onPressed: enviarMensaje,
-          icon: Icon(Icons.send),
-          style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Colors.grey),
+          IconButton(
+            onPressed: enviarMensaje,
+            icon: const Icon(Icons.send),
+            color: Colors.green,
+            iconSize: 30,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   void enviarMensaje() {
-    if (tecMensaje.text.isNotEmpty) {
-      ServicioChat().enviarMensaje(widget.idReceptor, tecMensaje.text);
-
+    if (tecMensaje.text.trim().isNotEmpty) {
+      ServicioChat().enviarMensaje(widget.idReceptor, tecMensaje.text.trim());
       tecMensaje.clear();
-      Future.delayed(Duration(milliseconds: 50), () {
+
+      Future.delayed(const Duration(milliseconds: 100), () {
         hacerScrollAbajo();
       });
     }

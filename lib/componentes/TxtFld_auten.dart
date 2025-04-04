@@ -12,22 +12,22 @@ class TxtFld_auten extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         cursorColor: const Color.fromARGB(255, 0, 119, 255),
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
         controller: controller,
         obscureText: obscureTxt,
         decoration: InputDecoration(
           hintText: hintTxt,
-          hintStyle: TextStyle(
-            color: const Color.fromARGB(255, 44, 69, 82),
+          hintStyle: const TextStyle(
+            color: Color.fromARGB(255, 44, 69, 82),
           ),
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color.fromARGB(255, 76, 0, 255)
+              color: Color.fromARGB(255, 76, 0, 255)
             ),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color.fromARGB(255, 0, 92, 197),
+              color: Color.fromARGB(255, 0, 92, 197),
             ),
           ),
           fillColor: const Color.fromARGB(184, 126, 222, 252),
