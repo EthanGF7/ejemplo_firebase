@@ -3,7 +3,6 @@ import 'package:ejemplo_firebase/chat/servicio_chat.dart';
 import 'package:ejemplo_firebase/componentes/item_usuario.dart';
 import 'package:ejemplo_firebase/paginas/editardatos_usario.dart';
 import 'package:ejemplo_firebase/paginas/pagChat.dart';
-
 import 'package:flutter/material.dart';
 
 class paginainicio extends StatefulWidget {
@@ -22,14 +21,16 @@ class _paginainicioState extends State<paginainicio> {
         title: Text(ServicioAuth().getUsuarioActual()!.email.toString()),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const EditardatosUsario(),
-                    ));
-              },
-              icon: const Icon(Icons.person)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EditardatosUsario(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.person),
+          ),
           IconButton(
             onPressed: () {
               ServicioAuth().hacerlogout();
@@ -39,23 +40,21 @@ class _paginainicioState extends State<paginainicio> {
         ],
       ),
       body: StreamBuilder(
-          stream: ServicioChat().getUsuarios(),
-          builder: (context, snapshot) {
-            //encaso de error
-            if (snapshot.hasError) {
-              return const Text("Error en el snapshot");
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Text("Cargando datos");
-            }
-            //devolviendo datos
-            return ListView(
-              children: snapshot.data!
-                  .map<Widget>(
-                      (datosUsuario) => _contruirItemUsuairo(datosUsuario))
-                  .toList(),
-            );
-          }),
+        stream: ServicioChat().getUsuarios(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text("Error en el snapshot");
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Cargando datos");
+          }
+          return ListView(
+            children: snapshot.data!
+                .map<Widget>((datosUsuario) => _contruirItemUsuairo(datosUsuario))
+                .toList(),
+          );
+        },
+      ),
     );
   }
 
@@ -64,8 +63,12 @@ class _paginainicioState extends State<paginainicio> {
       return Container();
     }
 
+    final nom = datosUsuario["nom"];
+    final email = datosUsuario["email"];
+    final mostrar = (nom != null && nom.toString().trim().isNotEmpty) ? nom : email;
+
     return ItemUsuario(
-      emailUsuaio: datosUsuario["email"],
+      emailUsuaio: mostrar,
       onTap: () {
         Navigator.push(
           context,

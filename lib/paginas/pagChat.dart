@@ -43,14 +43,33 @@ class _PaginachatState extends State<Paginachat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 215, 245, 250), // color de fons com la imatge
+      backgroundColor: const Color.fromARGB(255, 215, 245, 250),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 202, 174, 238),
-        title: Text(
-          ServicioAuth().getUsuarioActual()?.email ?? "Chat",
-          style: const TextStyle(color: Colors.black87),
-        ),
         iconTheme: const IconThemeData(color: Colors.black),
+        title: FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance
+              .collection("usuarios")
+              .doc(widget.idReceptor)
+              .get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Carregant...");
+            }
+
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return const Text("Sense nom");
+            }
+
+            final datos = snapshot.data!.data() as Map<String, dynamic>;
+            final nom = datos["nom"];
+            final email = datos["email"];
+            return Text(
+              (nom != null && nom.toString().trim().isNotEmpty) ? nom : email ?? "Sense nom",
+              style: const TextStyle(color: Colors.black87),
+            );
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -100,7 +119,7 @@ class _PaginachatState extends State<Paginachat> {
 
   Widget _crearZonaEscribirMensajes() {
     return Container(
-      color: const Color.fromARGB(255, 255, 224, 140), // groc com la imatge
+      color: const Color.fromARGB(255, 255, 224, 140),
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Row(
         children: [
