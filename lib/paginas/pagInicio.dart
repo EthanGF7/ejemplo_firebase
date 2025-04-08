@@ -21,40 +21,40 @@ class _paginainicioState extends State<paginainicio> {
         title: Text(ServicioAuth().getUsuarioActual()!.email.toString()),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EditardatosUsario(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.person),
-          ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditardatosUsario(),
+                    ));
+              },
+              icon: Icon(Icons.person)),
           IconButton(
             onPressed: () {
               ServicioAuth().hacerlogout();
             },
-            icon: const Icon(Icons.logout),
+            icon: Icon(Icons.logout),
           ),
         ],
       ),
       body: StreamBuilder(
-        stream: ServicioChat().getUsuarios(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text("Error en el snapshot");
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Cargando datos");
-          }
-          return ListView(
-            children: snapshot.data!
-                .map<Widget>((datosUsuario) => _contruirItemUsuairo(datosUsuario))
-                .toList(),
-          );
-        },
-      ),
+          stream: ServicioChat().getUsuarios(),
+          builder: (context, snapshot) {
+            //encaso de error
+            if (snapshot.hasError) {
+              return Text("Error en el snapshot");
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Cargando datos");
+            }
+            //devolviendo datos
+            return ListView(
+              children: snapshot.data!
+                  .map<Widget>(
+                      (datosUsuario) => _contruirItemUsuairo(datosUsuario))
+                  .toList(),
+            );
+          }),
     );
   }
 
@@ -63,12 +63,8 @@ class _paginainicioState extends State<paginainicio> {
       return Container();
     }
 
-    final nom = datosUsuario["nom"];
-    final email = datosUsuario["email"];
-    final mostrar = (nom != null && nom.toString().trim().isNotEmpty) ? nom : email;
-
     return ItemUsuario(
-      emailUsuaio: mostrar,
+      emailUsuaio: datosUsuario["email"],
       onTap: () {
         Navigator.push(
           context,

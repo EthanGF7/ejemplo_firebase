@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ejemplo_firebase/autenticaion/servicio_auth.dart';
 import 'package:ejemplo_firebase/chat/servicio_chat.dart';
-import 'package:ejemplo_firebase/componentes/BurjMensaje.dart';
+import 'package:ejemplo_firebase/componentes/BurbujaMensaje.dart';
 import 'package:flutter/material.dart';
 
 class Paginachat extends StatefulWidget {

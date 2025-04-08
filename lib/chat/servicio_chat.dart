@@ -7,7 +7,7 @@ class ServicioChat {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Stream<List<Map<String, dynamic>>> getUsuarios() {
-    return _firestore.collection("Usuarios").snapshots().map((event) {
+    return _firestore.collection("usuarios").snapshots().map((event) {
       return event.docs.map((document) {
         return document.data();
       }).toList();
